@@ -1,0 +1,14 @@
+h1{
+    color: purple;
+}
+
+.square{
+    border: 1px solid gray;
+    margin: 1px;
+    width: 50px;
+    padding: 20px;
+    display: inline-block;
+}
+.color {
+    background: #9bc850;
+}
