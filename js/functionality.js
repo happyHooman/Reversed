@@ -26,3 +26,4 @@ $('#mainBoard').html(list.join(''));
         $(this).append('<div id="piesa"></div>');
     });
 
+//comment
