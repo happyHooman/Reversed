@@ -5,10 +5,18 @@ h1{
 .square{
     border: 1px solid gray;
     margin: 1px;
-    width: 50px;
-    padding: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 25px;
     display: inline-block;
 }
 .color {
     background: #9bc850;
+}
+#piesa {
+    background-color: silver;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: auto;
 }
