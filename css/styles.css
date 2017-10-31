@@ -3,20 +3,25 @@ h1{
 }
 
 .square{
+    background-color: greenyellow;
     border: 1px solid gray;
     margin: 1px;
     width: 40px;
     height: 40px;
-    padding: 25px;
-    display: inline-block;
 }
 .color {
     background: #9bc850;
 }
-#piesa {
-    background-color: silver;
-    width: 20px;
-    height: 20px;
+.piesa {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    margin: auto;
+    margin: 4px;
+}
+
+.player1{
+    background-color: white;
+}
+.player2{
+    background-color: #484848;
 }
