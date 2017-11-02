@@ -25,3 +25,13 @@ h1{
 .player-1{
     background-color: #484848;
 }
+
+#notifications {
+    display: inline;
+    width: 200px;
+    border: 2px solid dodgerblue;
+}
+
+#mainBoard {
+    display: inline;
+}

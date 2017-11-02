@@ -19,11 +19,11 @@ $("#mainBoard").on("click", "td", function () {
             //write in the matrix
             matrix[this.parentNode.rowIndex][this.cellIndex] = player;
 
-
             //display on the screen
             td.append('<div class="piesa player' + player + '"></div>');
 
             player = -player;
+            $("#notifications span").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
             canClick = false;
         } else {
             console.log("I'm sorry, you can not click here! Please try somewhere else!")
@@ -56,6 +56,7 @@ function load() {
         console.debug('contacts loaded', raspuns);
         matrix = raspuns.table;
         player = raspuns.player;
+        $("#notifications").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 8; j++) {
                 var piesa = matrix[i][j];
@@ -80,6 +81,7 @@ function checkIfBound(rowIndex, cellIndex, num1, num2) {
 
     if (rowIndex >= 8 || rowIndex < 0 || cellIndex >= 8 || cellIndex < 0) {
         //nothing to look for in this direction
+        arrayOfChanged=[];
     } else {
         if (matrix[rowIndex][cellIndex] === -player) {
 
@@ -104,7 +106,7 @@ function checkIfBound(rowIndex, cellIndex, num1, num2) {
             arrayOfChanged = [];
         } else {
             //not bound
-            arrayOfChanged=[];
+            arrayOfChanged = [];
         }
     }
 };
