@@ -74,45 +74,42 @@ var arrayOfChanged = [];
 function checkIfBound(rowIndex, cellIndex, num1, num2) {
 
     // num1 and num2 specify the direction
-    //going the specified direction
+    // going the specified direction
     rowIndex = rowIndex + num1;
     cellIndex = cellIndex + num2;
-    console.log("checking",rowIndex,cellIndex);
 
     if (rowIndex >= 8 || rowIndex < 0 || cellIndex >= 8 || cellIndex < 0) {
         //nothing to look for in this direction
-        console.log("Out of bound!");
-        return false;
     } else {
         if (matrix[rowIndex][cellIndex] === -player) {
+
             arrayOfChanged.push([rowIndex, cellIndex]);
-            console.log("Chain goes deeper!");
             checkIfBound(rowIndex, cellIndex, num1, num2);
+
         } else if (matrix[rowIndex][cellIndex] === player && arrayOfChanged.length > 0) {
             //found the bound
-            console.log("Bound!");
             canClick = true;
-            //next step: change colors
 
+            //change colors
             arrayOfChanged.forEach(function (t) {
                 var row = t[0];
                 var col = t[1];
-                console.log("Something has changed");
+
                 matrix[row][col] = player;
+
                 $('#mainBoard tr').eq(row).find('td').eq(col).html('<div class="piesa player' + player + '"></div>');
             });
 
             //discard arrayOfChanged
             arrayOfChanged = [];
         } else {
-            arrayOfChanged=[];
             //not bound
+            arrayOfChanged=[];
         }
     }
 };
 
 function checkNeighbours(rowIndex, cellIndex) {
-
     //direction top-left (-1, -1)
     checkIfBound(rowIndex, cellIndex, -1, -1);
 
@@ -136,6 +133,4 @@ function checkNeighbours(rowIndex, cellIndex) {
 
     //direction left (0, -1)
     checkIfBound(rowIndex, cellIndex, 0, -1);
-
-    console.log("________________"); //just empty space to separate messages
 }
