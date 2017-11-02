@@ -1,5 +1,6 @@
-var nextPlayer = 1;
+var player = 1;
 var matrix = [];
+var canClick = false;
 
 
 generateEmptyTable();
@@ -10,12 +11,23 @@ $("#mainBoard").on("click", "td", function () {
     var td = $(this);
 
     if (td.find('.piesa').length === 0) { //if the clicked cell is empty then put a piece
-        td.append('<div class="piesa player' + nextPlayer + '"></div>');
-        matrix[this.parentNode.rowIndex][this.cellIndex]= nextPlayer;
 
         checkNeighbours(this.parentNode.rowIndex, this.cellIndex);
+        if (canClick) {
+            // if there are oponent pieces bound by the player
 
-        nextPlayer = -nextPlayer;
+            //write in the matrix
+            matrix[this.parentNode.rowIndex][this.cellIndex] = player;
+
+
+            //display on the screen
+            td.append('<div class="piesa player' + player + '"></div>');
+
+            player = -player;
+            canClick = false;
+        } else {
+            console.log("I'm sorry, you can not click here! Please try somewhere else!")
+        }
 
     } else { //if the clicked cell is busy
         console.log("Cell Busy!");
@@ -43,7 +55,7 @@ function load() {
     }).done(function (raspuns) {
         console.debug('contacts loaded', raspuns);
         matrix = raspuns.table;
-        nextPlayer = raspuns.nextPlayer;
+        player = raspuns.player;
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 8; j++) {
                 var piesa = matrix[i][j];
@@ -57,45 +69,73 @@ function load() {
 
 }
 
-function checkNeighbours(rowIndex, cellIndex) {
-    //direction top-left (-1, -1)
-    if (matrix[rowIndex - 1][cellIndex - 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on top left");
+var arrayOfChanged = [];
+
+function checkIfBound(rowIndex, cellIndex, num1, num2) {
+
+    // num1 and num2 specify the direction
+    //going the specified direction
+    rowIndex = rowIndex + num1;
+    cellIndex = cellIndex + num2;
+    console.log("checking",rowIndex,cellIndex);
+
+    if (rowIndex >= 8 || rowIndex < 0 || cellIndex >= 8 || cellIndex < 0) {
+        //nothing to look for in this direction
+        console.log("Out of bound!");
+        return false;
+    } else {
+        if (matrix[rowIndex][cellIndex] === -player) {
+            arrayOfChanged.push([rowIndex, cellIndex]);
+            console.log("Chain goes deeper!");
+            checkIfBound(rowIndex, cellIndex, num1, num2);
+        } else if (matrix[rowIndex][cellIndex] === player && arrayOfChanged.length > 0) {
+            //found the bound
+            console.log("Bound!");
+            canClick = true;
+            //next step: change colors
+
+            arrayOfChanged.forEach(function (t) {
+                var row = t[0];
+                var col = t[1];
+                console.log("Something has changed");
+                matrix[row][col] = player;
+                $('#mainBoard tr').eq(row).find('td').eq(col).html('<div class="piesa player' + player + '"></div>');
+            });
+
+            //discard arrayOfChanged
+            arrayOfChanged = [];
+        } else {
+            arrayOfChanged=[];
+            //not bound
+        }
     }
+};
+
+function checkNeighbours(rowIndex, cellIndex) {
+
+    //direction top-left (-1, -1)
+    checkIfBound(rowIndex, cellIndex, -1, -1);
 
     //direction top (-1, 0)
-    if (matrix[rowIndex - 1][cellIndex] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on top");
-    }
+    checkIfBound(rowIndex, cellIndex, -1, 0);
 
     //direction top-right (-1, +1)
-    if (matrix[rowIndex - 1][cellIndex + 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on top right");
-    }
+    checkIfBound(rowIndex, cellIndex, -1, 1);
 
     //direction right (0, +1)
-    if (matrix[rowIndex][cellIndex + 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on right");
-    }
+    checkIfBound(rowIndex, cellIndex, 0, 1);
 
     //direction bottom-right (+1, +1)
-    if (matrix[rowIndex + 1][cellIndex + 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on bottom right");
-    }
+    checkIfBound(rowIndex, cellIndex, 1, 1);
 
     //direction bottom (+1, 0)
-    if (matrix[rowIndex + 1][cellIndex] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on bottom");
-    }
+    checkIfBound(rowIndex, cellIndex, 1, 0);
 
     //direction bottom-left (+1, -1)
-    if (matrix[rowIndex + 1][cellIndex - 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on bottom left");
-    }
+    checkIfBound(rowIndex, cellIndex, +1, -1);
 
     //direction left (0, -1)
-    if (matrix[rowIndex][cellIndex - 1] == (nextPlayer == 1 ? 2 : 1)) {
-        console.log("Found enemy on left");
-    }
+    checkIfBound(rowIndex, cellIndex, 0, -1);
+
     console.log("________________"); //just empty space to separate messages
 }
