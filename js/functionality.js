@@ -2,6 +2,27 @@ var nextPlayer = 1;
 var matrix = [];
 
 
+generateEmptyTable();
+load();
+
+
+$("#mainBoard").on("click", "td", function () {
+    var td = $(this);
+
+    if (td.find('.piesa').length === 0) { //if the clicked cell is empty then put a piece
+        td.append('<div class="piesa player' + nextPlayer + '"></div>');
+        matrix[this.parentNode.rowIndex][this.cellIndex]= nextPlayer;
+
+        checkNeighbours(this.parentNode.rowIndex, this.cellIndex);
+
+        nextPlayer = -nextPlayer;
+
+    } else { //if the clicked cell is busy
+        console.log("Cell Busy!");
+    }
+
+});
+
 function generateEmptyTable() {
     var list = [];
     for (var i = 0; i < 8; i++) {
@@ -35,9 +56,6 @@ function load() {
     });
 
 }
-
-generateEmptyTable();
-load();
 
 function checkNeighbours(rowIndex, cellIndex) {
     //direction top-left (-1, -1)
@@ -81,22 +99,3 @@ function checkNeighbours(rowIndex, cellIndex) {
     }
     console.log("________________"); //just empty space to separate messages
 }
-
-$("#mainBoard").on("click", "td", function () {
-    var td = $(this);
-    // nextPlayer = nextPlayer==1 ? 2 : 1;
-
-
-    if (td.find('.piesa').length == 0) { //if the clicked cell is empty then put a piece
-        td.append('<div class="piesa player' + nextPlayer + '"></div>');
-        matrix[this.parentNode.rowIndex][this.cellIndex]= nextPlayer;
-
-        checkNeighbours(this.parentNode.rowIndex, this.cellIndex);
-
-        nextPlayer = nextPlayer == 1 ? 2 : 1;
-    } else { //if the clicked cell is busy
-        console.log("Cell Busy!");
-    }
-
-});
-
