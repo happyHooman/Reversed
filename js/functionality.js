@@ -23,7 +23,7 @@ $("#mainBoard").on("click", "td", function () {
             td.append('<div class="piesa player' + player + '"></div>');
 
             player = -player;
-            $("#notifications span").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
+            $("#notifications").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
             canClick = false;
         } else {
             console.log("I'm sorry, you can not click here! Please try somewhere else!")
