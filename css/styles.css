@@ -28,11 +28,12 @@ h1{
 }
 
 #notifications {
-    display: inline;
+    display: inline-block;
     width: 200px;
     border: 2px solid dodgerblue;
+    padding: 5px;
 }
 
 #mainBoard {
-    display: inline;
+    display: inline-block;
 }

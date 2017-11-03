@@ -24,6 +24,7 @@ $("#mainBoard").on("click", "td", function () {
 
             player = -player;
             $("#notifications").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
+            $("#notifications").append('<div class="piesa player' + player + '" style="background-color: #444"></div>');
             canClick = false;
         } else {
             console.log("I'm sorry, you can not click here! Please try somewhere else!")
@@ -57,6 +58,7 @@ function load() {
         matrix = raspuns.table;
         player = raspuns.player;
         $("#notifications").html("It's " + (player === 1 ? 'white' : 'black') + " player's turn");
+        $("#notifications").append('<div class="piesa player' + player + '" style="background-color: #444"></div>');
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 8; j++) {
                 var piesa = matrix[i][j];
